@@ -1,3 +1,6 @@
+import Image from "next/image";
+import styles from "../../styles/Pokemon.module.css";
+
 export const getStaticPaths = async () => {
   const maxPokemons = 251;
 
@@ -32,5 +35,42 @@ export const getStaticProps = async (context) => {
 };
 
 export default function Pokemon({ pokemon }) {
-  return <h1>{pokemon.name}</h1>;
+  return (
+    <div className={styles.pokemon_container}>
+      <h1 className={styles.title}>{pokemon.name}</h1>
+      <Image
+        src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemon.id}.png`}
+        width="200"
+        height="200"
+        alt={pokemon.name}
+      />
+      <div>
+        <h3>Number:</h3>
+        <p>#{pokemon.id}</p>
+      </div>
+      <div>
+        <h3>Pokémon Type:</h3>
+      </div>
+      <div className={styles.types_container}>
+        {pokemon.types.map((item, index) => (
+          <span
+            key={index}
+            className={`${styles.type} ${styles[`type_` + item.type.name]}`}
+          >
+            {item.type.name}
+          </span>
+        ))}
+      </div>
+      <div className={styles.data_container}>
+        <div className={styles.data_height}>
+          <h4>Height:</h4>
+          <p>{pokemon.height * 10}cm</p>
+        </div>
+        <div className={styles.data_weight}>
+          <h4>Weight:</h4>
+          <p>{pokemon.weight / 10}kg</p>
+        </div>
+      </div>
+    </div>
+  );
 }
